@@ -78,6 +78,7 @@ class GuestbookApi(webapp2.RequestHandler):
             ancestor=guestbook_key(guestbook_name)).order(-Greeting.date)
         greetings = greetings_query.fetch(10)
 
+        self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps([g.to_dict() for g in greetings], default=default_json_serializer))
 
     def post(self):
