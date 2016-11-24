@@ -4,7 +4,7 @@
 
  handlers:
  - url: /api/(.*)
-   script: main.app
+   script: guestbook.app
 
  - url: /
    static_files: www/index.html
