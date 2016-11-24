@@ -21,13 +21,9 @@ import urllib
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-import jinja2
 import webapp2
+import json
 
-JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-    extensions=['jinja2.ext.autoescape'],
-    autoescape=True)
 # [END imports]
 
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
@@ -58,8 +54,22 @@ class Greeting(ndb.Model):
     date = ndb.DateTimeProperty(auto_now_add=True)
 # [END greeting]
 
-# [START main_page]
-class MainPage(webapp2.RequestHandler):
+def default_json_serializer(obj):
+    """Default JSON serializer."""
+    import calendar, datetime
+
+    if isinstance(obj, datetime.datetime):
+        if obj.utcoffset() is not None:
+            obj = obj - obj.utcoffset()
+        millis = int(
+            calendar.timegm(obj.timetuple()) * 1000 +
+            obj.microsecond / 1000
+        )
+        return millis
+    raise TypeError('Not sure how to serialize %s' % (obj,))
+
+# [START guestbook]
+class GuestbookApi(webapp2.RequestHandler):
 
     def get(self):
         guestbook_name = self.request.get('guestbook_name',
@@ -68,29 +78,7 @@ class MainPage(webapp2.RequestHandler):
             ancestor=guestbook_key(guestbook_name)).order(-Greeting.date)
         greetings = greetings_query.fetch(10)
 
-        user = users.get_current_user()
-        if user:
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
-
-        template_values = {
-            'user': user,
-            'greetings': greetings,
-            'guestbook_name': urllib.quote_plus(guestbook_name),
-            'url': url,
-            'url_linktext': url_linktext,
-        }
-
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render(template_values))
-# [END main_page]
-
-
-# [START guestbook]
-class Guestbook(webapp2.RequestHandler):
+        self.response.out.write(json.dumps([g.to_dict() for g in greetings], default=default_json_serializer))
 
     def post(self):
         # We set the same parent key on the 'Greeting' to ensure each
@@ -110,14 +98,12 @@ class Guestbook(webapp2.RequestHandler):
         greeting.content = self.request.get('content')
         greeting.put()
 
-        query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))
+        self.response.out.write("ok")
 # [END guestbook]
 
 
 # [START app]
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
-    ('/sign', Guestbook),
+    ('/api/guestbook', GuestbookApi),
 ], debug=True)
 # [END app]
