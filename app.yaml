@@ -1,15 +1,23 @@
- runtime: python27
- api_version: 1
- threadsafe: true
+runtime: python27
+api_version: 1
+threadsafe: true
 
- handlers:
- - url: /api/(.*)
-   script: guestbook.app
+handlers:
+- url: /api/(.*)
+  script: guestbook.app
 
- - url: /
-   static_files: www/index.html
-   upload: www/index.html
+- url: /
+  static_files: client/build/index.html
+  upload: client/build/index.html
 
- - url: /(.*)
-   static_files: www/\1
-   upload: www/(.*)
+- url: /(.*)
+  static_files: client/build/\1
+  upload: client/build/(.*)
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^node_modules/(?!node\.js$).*
