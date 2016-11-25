@@ -10,8 +10,8 @@ So I've created my own solution.
 ## Development Time
 
 During development you run `npm start` from the root directory which run in parallel both `dev_appserver.py` to run App Engine local dev-server and Webpack dev-server to support hot-reloading for React.
-You can change both the python and React code and it reload instantly - how fun and productive it that :rabbit:
-The backend run by default on port `8080` while the frontend run on port `3000`.  
+You can change both the python and React code and it reload instantly - how fun and productive it that :rabbit:  
+The backend run by default on port `8080` while the frontend run on port `3000`.    
 During development you shold use port `http://localhost:3000` to run your app to get the frontend content from Webpack dev-server.
 
 ## Deployment
