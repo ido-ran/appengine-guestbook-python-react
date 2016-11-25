@@ -7,6 +7,10 @@ I love using App Engine for my projects and for the next project I also wanted t
 I've found some starter project for this configuration but it wasn't up-to-date and I also didn't support development very well.  
 So I've created my own solution.
 
+The client application is built using [create-react-app](https://github.com/facebookincubator/create-react-app) which is using best-practice configuration.  
+The client app is not ejected which means you can easily update to the latest version as this project update frequently.  
+You can also run `npm run eject` if you need to create any custom configuration which is not supported in create-react-app.
+
 ## Development Time
 
 During development you run `npm start` from the root directory which run in parallel both `dev_appserver.py` to run App Engine local dev-server and Webpack dev-server to support hot-reloading for React.
