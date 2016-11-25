@@ -3,10 +3,17 @@
   "version": "0.1.0",
   "description": "Guestbook example app that runs on Google AppEngine Python backend with React frontend",
   "main": "index.js",
+  "appEngine": {
+    "project": "ran-frame",
+    "version": "4"
+  },
   "scripts": {
     "build": "cd client && npm run build && cd .. && node scripts/build.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm run build && deploy.cmd"
+    "deploy": "node scripts/deploy.js",
+    "dev:appengine": "python \"C:\\Program Files (x86)\\Google\\Cloud SDK\\google-cloud-sdk\\bin\\dev_appserver.py\" server",
+    "dev:webpack": "cd client && npm start",
+    "dev": "concurrently --kill-others --names \"appengine,webpack\" --prefix \"[{name}]\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:appengine\" \"npm run dev:webpack\""
   },
   "keywords": [
     "appengine",
@@ -16,7 +23,9 @@
   "author": "ido.ran@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "concurrently": "^3.1.0",
     "fs-extra": "^1.0.0",
+    "jsonfile": "^2.4.0",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4"
   }
