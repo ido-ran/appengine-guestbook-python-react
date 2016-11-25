@@ -1,2 +1,4 @@
 *.pyc
 deploy.cmd
+node_modules/
+www/
