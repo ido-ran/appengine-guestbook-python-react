@@ -1,0 +1,23 @@
+{
+  "name": "appengine-react-guestbook",
+  "version": "0.1.0",
+  "description": "Guestbook example app that runs on Google AppEngine Python backend with React frontend",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd client && npm run build && cd .. && node scripts/build.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "npm run build && deploy.cmd"
+  },
+  "keywords": [
+    "appengine",
+    "react",
+    "example"
+  ],
+  "author": "ido.ran@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "fs-extra": "^1.0.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.4"
+  }
+}
