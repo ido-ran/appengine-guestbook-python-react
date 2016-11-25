@@ -19,6 +19,17 @@ During development you shold use port `http://localhost:3000` to run your app to
 When you ready to deploy run `npm run deploy` which will build the static files from your React application and copy it to the `server/www` directory.  
 Then it will run the required `gcloud app deploy` to deploy both your application and your indx.yaml.
 
+You can set the App Engine project name and version to deploy inside `package.json` using the following JSON:
+```
+"appEngine": {
+  "project": "appengine-react-guestbook",
+  "version": "4"
+}
+```
+
+The `appEngine` field is optional, you can instead relay on the settings of `gcloud` but it is recommended to explicitly set those values as it will make team development easier.  
+If those values are set they will be passed to `gcloud` during deployment.
+
 ## Structure
 
 * `/` - The root directory is npm proejct which contain only scripts to run, build and deploy the application.
